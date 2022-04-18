@@ -1,0 +1,42 @@
+<html>
+    <body>
+        <form id="name_form">
+            <label>Nome:</label><input type="text" name="nome"/>
+            <br/>
+            <label>E-mail:</label><input type="text" name="email"/>
+            <br/>
+            <input type="submit" value="submit" />
+        </form>
+         <input type="text" id="resp" name="resp" size="50"/>
+        
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript">
+            $('#name_form').submit(function(e) {
+                    e.preventDefault();
+
+                    var formobj = {
+                       nome: $('[name=nome]').val(),
+                       email:$('[name=email]').val(),
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/json',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(formobj),
+                        success: function(callback) {
+                            console.log(callback);
+                            $('#resp').val(callback.nome.toUpperCase() + ' | ' + callback.email.toUpperCase());
+                            $('[name=nome]').val('');
+                            $('[name=email]').val('');
+                        },
+                        error: function() {
+                            $(this).html("error!");
+                        }
+                    });
+                });
+        </script>
+    </body>
+</html>
+
